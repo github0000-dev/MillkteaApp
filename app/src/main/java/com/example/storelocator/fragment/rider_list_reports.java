@@ -729,7 +729,7 @@ public class rider_list_reports extends Fragment {
                     }else{
 
                         Log.i("R","6");
-                        status.setText("No Pyament Made. !!!");
+                        status.setText("No Payament Made. !!!");
                         //Log.i("R",searchtext);
                     }
                 }

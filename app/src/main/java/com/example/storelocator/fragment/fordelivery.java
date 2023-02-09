@@ -110,7 +110,7 @@ public class fordelivery extends Fragment {
 //                                }
 //                            }
 //                        }
-                        if (orders!=null) {
+                        if (accountype!=null && orders!=null) {
                             if((accountype.equals("STAFF") || accountype.equals("Store Owner")) && (orders.getStatus().equals("1") || orders.getStatus().equals("2") || orders.getStatus().equals("3") || orders.getStatus().equals("4"))){
                                 list.add(orders);
                                 Log.i("R","1");
