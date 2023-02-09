@@ -132,10 +132,7 @@ public class adapter_storelist_items extends RecyclerView.Adapter<adapter_storel
 
 
         //StorageReference gsReference = storage.getReferenceFromUrl("gs://storelocator-c908a.appspot.com/1643612433037.jpg");
-        Picasso.get().load(R.drawable.shopp).into(holder.itemImage);
-
-//        holder.itemImage.setImageResource(R.drawable.shopp);
-
+        Picasso.get().load(product.getProductImage()).into(holder.itemImage);
         holder.itemImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

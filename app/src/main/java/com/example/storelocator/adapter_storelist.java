@@ -68,7 +68,7 @@ public class adapter_storelist extends  RecyclerView.Adapter<adapter_storelist.s
 
         holder.Distance.setText(store.getCurrLocation()+" "+store.getMetric());
                 //StorageReference gsReference = storage.getReferenceFromUrl("gs://storelocator-c908a.appspot.com/1643612433037.jpg");
-        Picasso.get().load(store.getImage()).into(holder.itemImage);
+        Picasso.get().load(R.drawable.shop).into(holder.itemImage);
 
 
         holder.itemImage.setOnClickListener(new View.OnClickListener() {
