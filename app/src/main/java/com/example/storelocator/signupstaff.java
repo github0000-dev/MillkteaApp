@@ -57,6 +57,8 @@ public class signupstaff extends AppCompatActivity {
     ProgressBar progressBar;
     static Double lh,lt;
 
+    private static int userfound;
+
     FirebaseDatabase rootNode;
     DatabaseReference reference;
     WifiManager wifiManager;
@@ -189,16 +191,21 @@ public class signupstaff extends AppCompatActivity {
                     } else if (phone.length() < 10) {
                         regphone.setError("Please Input Right Phone Number.");
                         return;
+                    } else if (userFound(username) == 0 && !username.equals(getIntent().getStringExtra("username"))) {
+                        regusername.setError("This username exists.");
+                        return;
+                    } else {
+                        reference.child(getIntent().getStringExtra("username")).removeValue();
+
+                        //view usally use for storeowner for their store rating
+                        helper_user helper_user = new helper_user(fullname,username,password,email,storename,phone,accountype,Destlongt,Deslati,image,"0","1",Address);
+                        reference.child(username).setValue(helper_user);
+
+                        Toast.makeText(signupstaff.this,"Successfully Updated",Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(signupstaff.this,rider_frame.class);
+                        startActivity(intent);
                     }
 
-
-                    //view usally use for storeowner for their store rating
-                    helper_user helper_user = new helper_user(fullname,username,password,email,storename,phone,accountype,Destlongt,Deslati,image,"0","1",Address);
-                    reference.child(username).setValue(helper_user);
-
-                    Toast.makeText(signupstaff.this,"Successfully Updated",Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(signupstaff.this,rider_frame.class);
-                    startActivity(intent);
                 }else if(getIntent().getStringExtra("hasdata").equals("2")){
                     String fullname = regfullname.getText().toString();
                     String username = regusername.getText().toString();
@@ -231,6 +238,7 @@ public class signupstaff extends AppCompatActivity {
                     }
 
 
+
                     //view usally use for storeowner for their store rating
 
                     SharedPreferences preferences = signupstaff.this.getSharedPreferences("user", Context.MODE_PRIVATE);
@@ -252,30 +260,38 @@ public class signupstaff extends AppCompatActivity {
                         } else if (phone.length() < 10) {
                             regphone.setError("Please Input Right Phone Number.");
                             return;
+                        } else if (userFound(username) == 0 && !username.equals(getIntent().getStringExtra("username"))) {
+                            regusername.setError("This username exists.");
+                            return;
+                        } else {
+                            reference.child(getIntent().getStringExtra("username")).removeValue();
+                            String accountype = "User";
+                            helper_user helper_user = new helper_user(fullname,username,password,email,storename,phone,accountype,Destlongt,Deslati,image,"1","1",Address);
+                            reference.child(username).setValue(helper_user);
+
+
+                            SharedPreferences preferences1;
+                            SharedPreferences.Editor editor;
+                            preferences1 = getSharedPreferences("user",MODE_PRIVATE);
+                            editor = preferences1.edit();
+                            editor.putString("username",username);
+                            editor.putString("accountype",accountype);
+                            editor.putString("password",password);
+                            editor.putString("address",Address);
+                            editor.putString("longti",Destlongt);
+                            editor.putString("lati",Deslati);
+                            editor.putString("phone",phone);
+                            editor.putString("fullname",fullname);
+                            editor.putString("email",email);
+                            editor.commit();
+
+
+                            Toast.makeText(signupstaff.this,"Successfully Updated",Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(signupstaff.this,list_store.class);
+                            startActivity(intent);
                         }
-                        String accountype = "User";
-                        helper_user helper_user = new helper_user(fullname,username,password,email,storename,phone,accountype,Destlongt,Deslati,image,"1","1",Address);
-                        reference.child(username).setValue(helper_user);
-
-                        SharedPreferences preferences1;
-                        SharedPreferences.Editor editor;
-                        preferences1 = getSharedPreferences("user",MODE_PRIVATE);
-                        editor = preferences1.edit();
-                        editor.putString("username",username);
-                        editor.putString("accountype",accountype);
-                        editor.putString("password",password);
-                        editor.putString("address",Address);
-                        editor.putString("longti",Destlongt);
-                        editor.putString("lati",Deslati);
-                        editor.putString("phone",phone);
-                        editor.putString("fullname",fullname);
-                        editor.putString("email",email);
-                        editor.commit();
 
 
-                        Toast.makeText(signupstaff.this,"Successfully Updated",Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(signupstaff.this,list_store.class);
-                        startActivity(intent);
                     }else if(actype.equals("Store Owner")){
                         if(fullname.isEmpty() || username.isEmpty() || email.isEmpty() || phone.isEmpty() || password.isEmpty()
                                 || Destlongt.isEmpty() || Deslati.isEmpty() || Address.isEmpty()){
@@ -293,28 +309,34 @@ public class signupstaff extends AppCompatActivity {
                         } else if (phone.length() < 10) {
                             regphone.setError("Please Input Right Phone Number.");
                             return;
+                        } else if (userFound(username) == 0 && !username.equals(getIntent().getStringExtra("username"))) {
+                            regusername.setError("This username exists.");
+                            return;
+                        } else {
+
+                            reference.child(getIntent().getStringExtra("username")).removeValue();
+                            String accountype = "Store Owner";
+                            helper_user helper_user = new helper_user(fullname,username,password,email,storename,phone,accountype,Destlongt,Deslati,image,"1","1",Address);
+                            reference.child(username).setValue(helper_user);
+
+                            SharedPreferences preferences1;
+                            SharedPreferences.Editor editor;
+                            preferences1 = getSharedPreferences("user",MODE_PRIVATE);
+                            editor = preferences1.edit();
+                            editor.putString("username",username);
+                            editor.putString("accountype",accountype);
+                            editor.putString("password",password);
+                            editor.putString("address",Address);
+                            editor.putString("longti",Destlongt);
+                            editor.putString("lati",Deslati);
+                            editor.putString("phone",phone);
+                            editor.putString("fullname",fullname);
+                            editor.putString("email",email);
+                            editor.commit();
+
+                            Toast.makeText(signupstaff.this,"Successfully Updated",Toast.LENGTH_SHORT).show();
+                            finish();
                         }
-                        String accountype = "Store Owner";
-                        helper_user helper_user = new helper_user(fullname,username,password,email,storename,phone,accountype,Destlongt,Deslati,image,"1","1",Address);
-                        reference.child(username).setValue(helper_user);
-
-                        SharedPreferences preferences1;
-                        SharedPreferences.Editor editor;
-                        preferences1 = getSharedPreferences("user",MODE_PRIVATE);
-                        editor = preferences1.edit();
-                        editor.putString("username",username);
-                        editor.putString("accountype",accountype);
-                        editor.putString("password",password);
-                        editor.putString("address",Address);
-                        editor.putString("longti",Destlongt);
-                        editor.putString("lati",Deslati);
-                        editor.putString("phone",phone);
-                        editor.putString("fullname",fullname);
-                        editor.putString("email",email);
-                        editor.commit();
-
-                        Toast.makeText(signupstaff.this,"Successfully Updated",Toast.LENGTH_SHORT).show();
-                        finish();
                     }else if(actype.equals("STAFF")){
                         if(fullname.isEmpty() || username.isEmpty() || email.isEmpty() || phone.isEmpty() || password.isEmpty()
                                 || Destlongt.isEmpty() || Deslati.isEmpty() || Address.isEmpty()){
@@ -332,14 +354,20 @@ public class signupstaff extends AppCompatActivity {
                         } else if (phone.length() < 10) {
                             regphone.setError("Please Input Right Phone Number.");
                             return;
+                        } else if (userFound(username) == 0 && !username.equals(getIntent().getStringExtra("username"))) {
+                            regusername.setError("This username exists.");
+                            return;
+                        } else {
+                            reference.child(getIntent().getStringExtra("username")).removeValue();
+                            String accountype = "STAFF";
+                            helper_user helper_user = new helper_user(fullname,username,password,email,storename,phone,accountype,Destlongt,Deslati,image,"1","1",Address);
+                            reference.child(username).setValue(helper_user);
+
+
+                            Toast.makeText(signupstaff.this,"Successfully Updated",Toast.LENGTH_SHORT).show();
+                            finish();
                         }
-                        String accountype = "STAFF";
-                        helper_user helper_user = new helper_user(fullname,username,password,email,storename,phone,accountype,Destlongt,Deslati,image,"1","1",Address);
-                        reference.child(username).setValue(helper_user);
 
-
-                        Toast.makeText(signupstaff.this,"Successfully Updated",Toast.LENGTH_SHORT).show();
-                        finish();
                     }else{
                         if(fullname.isEmpty() || username.isEmpty() || email.isEmpty() || phone.isEmpty() || password.isEmpty()
                                 || Destlongt.isEmpty() || Deslati.isEmpty() || Address.isEmpty()){
@@ -357,29 +385,35 @@ public class signupstaff extends AppCompatActivity {
                         } else if (phone.length() < 10) {
                             regphone.setError("Please Input Right Phone Number.");
                             return;
+                        } else if (userFound(username) == 0 && !username.equals(getIntent().getStringExtra("username"))) {
+                            regusername.setError("This username exists.");
+                            return;
+                        } else {
+                            reference.child(getIntent().getStringExtra("username")).removeValue();
+                            String accountype = "Rider";
+                            helper_user helper_user = new helper_user(fullname,username,password,email,storename,phone,accountype,Destlongt,Deslati,image,"1","1",Address);
+                            reference.child(username).setValue(helper_user);
+
+                            SharedPreferences preferences1;
+                            SharedPreferences.Editor editor;
+                            preferences1 = getSharedPreferences("user",MODE_PRIVATE);
+                            editor = preferences1.edit();
+                            editor.putString("username",username);
+                            editor.putString("accountype",accountype);
+                            editor.putString("password",password);
+                            editor.putString("address",Address);
+                            editor.putString("longti",Destlongt);
+                            editor.putString("lati",Deslati);
+                            editor.putString("phone",phone);
+                            editor.putString("fullname",fullname);
+                            editor.putString("email",email);
+                            editor.commit();
+
+                            Toast.makeText(signupstaff.this,"Successfully Updated",Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(signupstaff.this,rider_frame.class);
+                            startActivity(intent);
                         }
-                        String accountype = "Rider";
-                        helper_user helper_user = new helper_user(fullname,username,password,email,storename,phone,accountype,Destlongt,Deslati,image,"1","1",Address);
-                        reference.child(username).setValue(helper_user);
 
-                        SharedPreferences preferences1;
-                        SharedPreferences.Editor editor;
-                        preferences1 = getSharedPreferences("user",MODE_PRIVATE);
-                        editor = preferences1.edit();
-                        editor.putString("username",username);
-                        editor.putString("accountype",accountype);
-                        editor.putString("password",password);
-                        editor.putString("address",Address);
-                        editor.putString("longti",Destlongt);
-                        editor.putString("lati",Deslati);
-                        editor.putString("phone",phone);
-                        editor.putString("fullname",fullname);
-                        editor.putString("email",email);
-                        editor.commit();
-
-                        Toast.makeText(signupstaff.this,"Successfully Updated",Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(signupstaff.this,rider_frame.class);
-                        startActivity(intent);
                     }
 
                 }else if(getIntent().getStringExtra("hasdata").equals("3")){
@@ -411,31 +445,37 @@ public class signupstaff extends AppCompatActivity {
                     } else if (phone.length() < 10) {
                         regphone.setError("Please Input Right Phone Number.");
                         return;
+                    } else if (userFound(username) == 0 && !username.equals(getIntent().getStringExtra("username"))) {
+                        regusername.setError("This username exists.");
+                        return;
+                    } else {
+                        reference.child(getIntent().getStringExtra("username")).removeValue();
+
+
+                        //view usally use for storeowner for their store rating
+                        helper_user helper_user = new helper_user(fullname,username,password,email,storename,phone,accountype,Destlongt,Deslati,image,"1","1",Address);
+                        reference.child(username).setValue(helper_user);
+
+                        SharedPreferences preferences1;
+                        SharedPreferences.Editor editor;
+                        preferences1 = getSharedPreferences("user",MODE_PRIVATE);
+                        editor = preferences1.edit();
+                        editor.putString("username",username);
+                        editor.putString("accountype",accountype);
+                        editor.putString("password",password);
+                        editor.putString("address",Address);
+                        editor.putString("longti",Destlongt);
+                        editor.putString("lati",Deslati);
+                        editor.putString("phone",phone);
+                        editor.putString("fullname",fullname);
+                        editor.putString("email",email);
+                        editor.commit();
+
+                        Toast.makeText(signupstaff.this,"Successfully Updated",Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(signupstaff.this,admin_frame.class);
+                        startActivity(intent);
                     }
 
-
-                    //view usally use for storeowner for their store rating
-                    helper_user helper_user = new helper_user(fullname,username,password,email,storename,phone,accountype,Destlongt,Deslati,image,"1","1",Address);
-                    reference.child(username).setValue(helper_user);
-
-                    SharedPreferences preferences1;
-                    SharedPreferences.Editor editor;
-                    preferences1 = getSharedPreferences("user",MODE_PRIVATE);
-                    editor = preferences1.edit();
-                    editor.putString("username",username);
-                    editor.putString("accountype",accountype);
-                    editor.putString("password",password);
-                    editor.putString("address",Address);
-                    editor.putString("longti",Destlongt);
-                    editor.putString("lati",Deslati);
-                    editor.putString("phone",phone);
-                    editor.putString("fullname",fullname);
-                    editor.putString("email",email);
-                    editor.commit();
-
-                    Toast.makeText(signupstaff.this,"Successfully Updated",Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(signupstaff.this,admin_frame.class);
-                    startActivity(intent);
                 }else{
                     String fullname = regfullname.getText().toString();
                     String username = regusername.getText().toString();
@@ -450,7 +490,7 @@ public class signupstaff extends AppCompatActivity {
                     String image = "https://www.pngarts.com/files/10/Default-Profile-Picture-PNG-Download-Image.png";
 
                     if(fullname.isEmpty() || username.isEmpty() || email.isEmpty() || phone.isEmpty() || password.isEmpty()
-                            || Destlongt.isEmpty() || Deslati.isEmpty() || Address.isEmpty()){
+                            || Destlongt.isEmpty() || Deslati.isEmpty() || Address.isEmpty()){ // one or more fields are empty
                         Toast.makeText(signupstaff.this,"Kindly fillup all fields",Toast.LENGTH_SHORT).show();
                         return;
                     } else if (!isValidName(fullname) && fullname.length() < 2) {
@@ -465,16 +505,21 @@ public class signupstaff extends AppCompatActivity {
                     } else if (phone.length() < 10) {
                         regphone.setError("Please Input Right Phone Number.");
                         return;
+                    } else if (userFound(username) == 0 ) {
+                        regusername.setError("This username exists.");
+                        return;
+                    } else {
+                        helper_user helper_user = new helper_user(fullname,username,password,email,storename,phone,accountype,Destlongt,Deslati,image,"0","0",Address);
+                        reference.child(username).setValue(helper_user);
+
+                        Toast.makeText(signupstaff.this,"Staff Registered",Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(signupstaff.this,store_owner.class);
+                        startActivity(intent);
                     }
 
 
                     //view usally use for storeowner for their store rating
-                    helper_user helper_user = new helper_user(fullname,username,password,email,storename,phone,accountype,Destlongt,Deslati,image,"0","0",Address);
-                    reference.child(username).setValue(helper_user);
 
-                    Toast.makeText(signupstaff.this,"Staff Registered",Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(signupstaff.this,store_owner.class);
-                    startActivity(intent);
                 }
 
 
@@ -512,6 +557,28 @@ public class signupstaff extends AppCompatActivity {
         }
 
     }
+
+    private int userFound(String username) {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("users");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.child(username).exists()) {
+                    userfound = 0;
+                } else {
+                    userfound = 1;
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        return userfound;
+    }
+
     private void showPlacePicker() {
         Intent intent = new PlacePicker.IntentBuilder()
                 .setLatLong(lt, lh)
