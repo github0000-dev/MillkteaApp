@@ -56,7 +56,7 @@ public class adapter_rider_delivery extends RecyclerView.Adapter<adapter_rider_d
         Intent intent = ((rider_frame) context).getIntent();
         String rider = intent.getStringExtra("user");
 
-        if(order.getStatus().equals("5") || order.getStatus().equals("4") || order.getStatus().equals("3") || order.getStatus().equals("2") || order.getStatus().equals("10")){
+        if(order.getStatus().equals("5") || order.getStatus().equals("4") || order.getStatus().equals("3") || order.getStatus().equals("2") || order.getStatus().equals("1")){
             holder.cancel.setVisibility(View.INVISIBLE);
 
         }

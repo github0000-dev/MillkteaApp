@@ -391,6 +391,10 @@ public class order_details extends AppCompatActivity {
 //                                    accept.setVisibility(View.VISIBLE);
 //                                }
 
+                                if (accountype.equals("STAFF")) {
+                                    System.out.println("Fix the STAFF now!!!");
+                                }
+
                                 break;
                             case "5":
                                 accept.setVisibility(View.VISIBLE);

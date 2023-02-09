@@ -98,19 +98,29 @@ public class fordelivery extends Fragment {
                         System.out.println("accounttype:"+accountype);
                         System.out.println("status:"+orders.getStatus());
 
-                        if((accountype.equals("STAFF") || accountype.equals("Store Owner")) && (orders.getStatus().equals("2") || orders.getStatus().equals("3") || orders.getStatus().equals("4"))){
-                            if(orders.getStore().equals(staffstore)){
-                                if(orders.getStore().equals(staffstore)){
-                                    list.add(orders);
-                                    Log.i("R","1");
-                                }
-                            }
-                        }else{
-                            if(orders.getRider().equals(rider)){
-                                if(orders.getStatus().equals("2") || orders.getStatus().equals("3") || orders.getStatus().equals("4")) {
+//                        if((accountype.equals("STAFF") || accountype.equals("Store Owner")) && (orders.getStatus().equals("1") || orders.getStatus().equals("2") || orders.getStatus().equals("3") || orders.getStatus().equals("4"))){
+//                            list.add(orders);
+//                            Log.i("R","1");
+//                        }else{
+//                            if(orders.getRider().equals(rider)){
+//                                if(orders.getStatus().equals("2") || orders.getStatus().equals("3") || orders.getStatus().equals("4")) {
+//
+//                                    Log.i("2DATA", rider + ":" + snapshot.child("rider").getValue().toString());
+//                                    list.add(orders);
+//                                }
+//                            }
+//                        }
+                        if (orders!=null) {
+                            if((accountype.equals("STAFF") || accountype.equals("Store Owner")) && (orders.getStatus().equals("1") || orders.getStatus().equals("2") || orders.getStatus().equals("3") || orders.getStatus().equals("4"))){
+                                list.add(orders);
+                                Log.i("R","1");
+                            }else{
+                                if(orders.getRider().equals(rider)){
+                                    if(orders.getStatus().equals("2") || orders.getStatus().equals("3") || orders.getStatus().equals("4")) {
 
-                                    Log.i("2DATA", rider + ":" + snapshot.child("rider").getValue().toString());
-                                    list.add(orders);
+                                        Log.i("2DATA", rider + ":" + snapshot.child("rider").getValue().toString());
+                                        list.add(orders);
+                                    }
                                 }
                             }
                         }
