@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        app:showAsAction="always"
+
+        android:icon="@drawable/more_vert"
+        android:title="">
+
+        <menu>
+            <item
+                android:id="@+id/account"
+                android:title="Account"
+                app:showAsAction="never"
+                >
+            </item>
+            <item
+                android:id="@+id/store"
+                android:title="Store"
+                app:showAsAction="never"
+                >
+            </item>
+            <item
+                android:id="@+id/staff"
+                android:title="Staff"
+                app:showAsAction="never"
+                >
+            </item>
+            <item
+                android:id="@+id/category"
+                android:title="Add Category"
+                app:showAsAction="never"
+                >
+            </item>
+            <item
+                android:id="@+id/reviews"
+                android:title="Store Review"
+                app:showAsAction="never"
+                >
+            </item>
+            <item
+                android:id="@+id/mangeStore"
+                android:title="Logout"
+                app:showAsAction="never"
+                >
+            </item>
+            </menu>
+    </item>
+</menu>
