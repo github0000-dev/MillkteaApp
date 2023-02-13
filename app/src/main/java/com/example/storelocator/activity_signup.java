@@ -64,6 +64,8 @@ public class activity_signup extends AppCompatActivity {
     ProgressBar progressBar;
     static Double lh,lt;
 
+    private static int shopfound;
+
     DatabaseReference verifydb = FirebaseDatabase.getInstance().getReference();
 
     FirebaseDatabase rootNode;
@@ -128,6 +130,9 @@ public class activity_signup extends AppCompatActivity {
         lati =  findViewById(R.id.lat);
         address =  findViewById(R.id.address);
 
+        longt.setVisibility(View.GONE);
+        lati.setVisibility(View.GONE);
+
         wifiManager= (WifiManager) this.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         buttonSignup = findViewById(R.id.signupBtn);
 
@@ -163,7 +168,7 @@ public class activity_signup extends AppCompatActivity {
                 String password = regpassword.getText().toString();
                 String email = regemail.getText().toString();
 //                String storename = regstorename.getText().toString();
-                String storename = "N/A";
+                String storename = "";
                 String phone = regphone.getText().toString();
 //                String accountype = regacc.getSelectedItem().toString();
 //                if (regacc.getSelectedItem().toString() == "Customer") {
@@ -361,24 +366,17 @@ public class activity_signup extends AppCompatActivity {
         input.setGravity(Gravity.CENTER);
         builder.setView(input);
         builder.setCancelable(true);
-
         // Set up the buttons
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
                 if(input.getText().toString().isEmpty()){
                     Toast.makeText(activity_signup.this,"Please Input Shop Name.",Toast.LENGTH_SHORT).show();
                     storeNameCreate(fullname,username,password,email,storename,phone,accountype,destlong,destlat,image,"0","0",Address,intent,reference);
-                    Toast.makeText(activity_signup.this,"Please Enter your Code",Toast.LENGTH_LONG).show();
-                    builder.show();
-                }
-//                else if () {
-//                    Toast.makeText(activity_signup.this,"Please Type.",Toast.LENGTH_SHORT).show();
-//                    storeNameCreate(fullname,username,password,email,storename,phone,accountype,destlong,destlat,image,"0","0",Address,intent,reference);
-//                    dialog.cancel();
-//                }
-                else {
+                } else if (shopFound(input.getText().toString().trim(),username) == 0) {
+                    Toast.makeText(activity_signup.this,"Shop name existed. Input another.",Toast.LENGTH_SHORT).show();
+                    storeNameCreate(fullname,username,password,email,storename,phone,accountype,destlong,destlat,image,"0","0",Address,intent,reference);
+                } else {
                     String storeName = input.getText().toString().trim();
                     helper_user helper_user = new helper_user(fullname,username,password,email,storeName,phone,accountype,destlong,destlat,image,"0","0",Address);
                     reference.child(username).setValue(helper_user);
@@ -397,6 +395,30 @@ public class activity_signup extends AppCompatActivity {
         });
         builder.show();
     }
+
+
+
+    private int shopFound(String shopname,String username) {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("users");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.child(username).child("storename").child(shopname).exists()) {
+                    shopfound = 0;
+                } else {
+                    shopfound = 1;
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        return shopfound;
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

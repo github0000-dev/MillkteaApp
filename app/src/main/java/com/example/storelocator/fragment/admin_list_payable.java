@@ -19,9 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.storelocator.R;
 import com.example.storelocator.adapter_receivables;
-import com.example.storelocator.adapter_userlist;
 import com.example.storelocator.helper_payables;
-import com.example.storelocator.helper_user;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,7 +34,7 @@ import java.util.Collections;
 import java.util.List;
 
 
-public class admin_list_receivable extends Fragment {
+public class admin_list_payable extends Fragment {
     ArrayList<helper_payables> list;
     adapter_receivables myAdapter;
     RecyclerView recyclerView;
@@ -57,6 +55,7 @@ public class admin_list_receivable extends Fragment {
         recyclerView = view.findViewById(R.id.accountview);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+
 
         list = new ArrayList<>();
         myAdapter = new adapter_receivables(view.getContext(),list);
@@ -101,7 +100,7 @@ public class admin_list_receivable extends Fragment {
         String accountype = preferences.getString("accountype","");
         String staffstore = preferences.getString("Store","");
 
-        query1=reference.child("storereceivables").orderByChild("status").equalTo("Approved");
+        query1=reference.child("payables").orderByChild("status").equalTo("Approved");
         query1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -136,7 +135,7 @@ public class admin_list_receivable extends Fragment {
         String accountype = preferences.getString("accountype","");
         String staffstore = preferences.getString("Store","");
 
-        query1=reference.child("storereceivables").orderByChild("status").equalTo("Under review");
+        query1=reference.child("payables").orderByChild("status").equalTo("Under review");
         query1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

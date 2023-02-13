@@ -36,9 +36,8 @@
         <!--        <item>User</item>-->
         <!--        <item>Rider</item>-->
         <!--        <item>STAFF</item>-->
-        <item>Customer</item>
+        <item>Shop Owner</item>
         <item>Delivery Guy</item>
-        <item>Shop Staff</item>
     </string-array>
     <string name="title_activity_riders_frame">riders_frame</string>
     <string name="tab_text_1">Tab 1</string>

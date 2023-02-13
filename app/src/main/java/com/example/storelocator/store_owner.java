@@ -215,6 +215,15 @@ public class store_owner extends AppCompatActivity {
 
                     }else if(price1.getText().toString().equals("") || price2.getText().toString().equals("") || price3.getText().toString().equals("")){
                         Toast.makeText(getApplicationContext(),"Please Fill all Fields",Toast.LENGTH_SHORT).show();
+                    }else if(Long.parseLong(price3.getText().toString().trim()) < Long.parseLong(price2.getText().toString().trim()) ||
+                            Long.parseLong(price3.getText().toString().trim()) < Long.parseLong(price1.getText().toString().trim()) ){
+                        Toast.makeText(getApplicationContext(),"Please check large size. ",Toast.LENGTH_SHORT).show();
+                    }else if(Long.parseLong(price2.getText().toString().trim()) > Long.parseLong(price3.getText().toString().trim()) ||
+                            Long.parseLong(price2.getText().toString().trim()) < Long.parseLong(price1.getText().toString().trim()) ){
+                        Toast.makeText(getApplicationContext(),"Please check medium size",Toast.LENGTH_SHORT).show();
+                    }else if(Long.parseLong(price1.getText().toString().trim()) > Long.parseLong(price3.getText().toString().trim()) ||
+                            Long.parseLong(price1.getText().toString().trim()) > Long.parseLong(price2.getText().toString().trim()) ){
+                        Toast.makeText(getApplicationContext(),"Please check small size",Toast.LENGTH_SHORT).show();
                     }else{
                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                             if(!list.stream().map(helper_product ::getParoductName).anyMatch(itemname.getText().toString()::equals)){
@@ -233,6 +242,7 @@ public class store_owner extends AppCompatActivity {
 
             }
         });
+
         productImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -338,7 +348,6 @@ public class store_owner extends AppCompatActivity {
                 }
                 myAdapter.notifyDataSetChanged();
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
@@ -359,8 +368,6 @@ public class store_owner extends AppCompatActivity {
         if(requestCode == 1 && resultCode == RESULT_OK && data.getData()!=null){
             imageUri=data.getData();
             productImg.setImageURI(imageUri);
-
-
         }
     }
     private String getFileExt(Uri uri){
@@ -415,6 +422,13 @@ public class store_owner extends AppCompatActivity {
                         reference.child(img).setValue(helper_product);
                         productImg.setImageURI(null);
                         Toast.makeText(store_owner.this,"Product Successfully Added",Toast.LENGTH_SHORT).show();
+
+                        itemname.setText("");
+                        price1.setText("");
+                        price2.setText("");
+                        price3.setText("");
+
+                        productImg.setImageDrawable(null);
 
                     }
                 });

@@ -116,15 +116,18 @@ public class signupstaff extends AppCompatActivity {
         lati =  findViewById(R.id.lat);
         address =  findViewById(R.id.address);
 
+
+        longt.setVisibility(View.GONE);
+        lati.setVisibility(View.GONE);
+
         buttonSignup = findViewById(R.id.signupBtn);
 
-        if(getIntent().getStringExtra("hasdata").equals("1")){
+        if(getIntent().getStringExtra("hasdata").equals("0")){
+            pickLocationBtn.setVisibility(View.GONE);
+            address.setVisibility(View.GONE);
+            buttonSignup.setText("Add Staff");
+        } else if (getIntent().getStringExtra("hasdata").equals("1")) {
             regstorename.getLayoutParams().height = 1;
-        }
-
-
-
-        if(getIntent().getStringExtra("hasdata").equals("1") || getIntent().getStringExtra("hasdata").equals("2")  || getIntent().getStringExtra("hasdata").equals("3")){
             regfullname.setText(getIntent().getStringExtra("fullname"));
             regemail.setText(getIntent().getStringExtra("email"));
             regstorename.setText(getIntent().getStringExtra("storeSelect"));
@@ -134,7 +137,22 @@ public class signupstaff extends AppCompatActivity {
             longt.setText(getIntent().getStringExtra("long"));
             lati.setText(getIntent().getStringExtra("lat"));
             address.setText(getIntent().getStringExtra("address"));
-            buttonSignup.setText("Update");
+            buttonSignup.setText("Update Staff");
+            getSupportActionBar().setTitle("Change Staff Info");
+            pickLocationBtn.setVisibility(View.GONE);
+            address.setVisibility(View.GONE);
+
+        } else {
+            regfullname.setText(getIntent().getStringExtra("fullname"));
+            regemail.setText(getIntent().getStringExtra("email"));
+            regstorename.setText(getIntent().getStringExtra("storeSelect"));
+            regusername.setText(getIntent().getStringExtra("username"));
+            regpassword.setText(getIntent().getStringExtra("password"));
+            regphone.setText(getIntent().getStringExtra("phone"));
+            longt.setText(getIntent().getStringExtra("long"));
+            lati.setText(getIntent().getStringExtra("lat"));
+            address.setText(getIntent().getStringExtra("address"));
+            buttonSignup.setText("Update Your Account");
             getSupportActionBar().setTitle("Change User Account");
         }
 
@@ -484,9 +502,9 @@ public class signupstaff extends AppCompatActivity {
                     String storename = regstorename.getText().toString();
                     String phone = regphone.getText().toString();
                     String accountype = "STAFF";
-                    String Destlongt = longt.getText().toString();
-                    String Deslati = lati.getText().toString();
-                    String Address = address.getText().toString();
+                    String Destlongt = "";
+                    String Deslati = "";
+                    String Address = "";
                     String image = "https://www.pngarts.com/files/10/Default-Profile-Picture-PNG-Download-Image.png";
 
                     if(fullname.isEmpty() || username.isEmpty() || email.isEmpty() || phone.isEmpty() || password.isEmpty()
@@ -509,7 +527,7 @@ public class signupstaff extends AppCompatActivity {
                         regusername.setError("This username exists.");
                         return;
                     } else {
-                        helper_user helper_user = new helper_user(fullname,username,password,email,storename,phone,accountype,Destlongt,Deslati,image,"0","0",Address);
+                        helper_user helper_user = new helper_user(fullname,username,password,email,storename,phone,accountype,Destlongt,Deslati,image,"0","1",Address);
                         reference.child(username).setValue(helper_user);
 
                         Toast.makeText(signupstaff.this,"Staff Registered",Toast.LENGTH_SHORT).show();

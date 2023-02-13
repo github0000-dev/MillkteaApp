@@ -40,7 +40,7 @@ public class adapter_itemlist extends RecyclerView.Adapter<adapter_itemlist.MyVi
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         helper_product product = list.get(position);
         holder.itemName.setText(product.getParoductName());
-        holder.itemID.setText(product.getItemID());
+        holder.itemID.setText("S - " + product.getPricesm() + ", M - " + product.getPricemd() + ", L - " +product.getPricelg());
         holder.addCount.setText("AddToCart Count: "+product.getProductview()+" times");
 
         //StorageReference gsReference = storage.getReferenceFromUrl("gs://storelocator-c908a.appspot.com/1643612433037.jpg");

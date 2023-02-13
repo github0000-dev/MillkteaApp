@@ -40,8 +40,6 @@ public class adapter_userlist extends RecyclerView.Adapter<adapter_userlist.MyVi
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(context).inflate(R.layout.list_account, parent, false);
 
-
-
         return new MyViewHolder(v);
     }
 
@@ -57,11 +55,12 @@ public class adapter_userlist extends RecyclerView.Adapter<adapter_userlist.MyVi
             holder.accountype.setText("Staff");
             holder.storeListAdd.setText(user.getStorename());
         } else if (user.getAccountype().equals("Rider")) {
-            holder.accountype.setText("Delivery Guy");
-            holder.storeListAdd.setText("");
+            holder.accountype.setVisibility(View.GONE);
+            holder.storeListAdd.setText("Delivery Guy");
         } else if (user.getAccountype().equals("Store Owner")) {
-            holder.accountype.setText("Shop Owner");
-            holder.storeListAdd.setText(user.getStorename());
+            holder.accountype.setText(user.getFullname());
+            holder.accountname.setText(user.getStorename());
+            holder.storeListAdd.setText("Shop Owner");
         } else {
             holder.accountype.setText("Customer");
             holder.storeListAdd.setText("");
@@ -146,7 +145,7 @@ public class adapter_userlist extends RecyclerView.Adapter<adapter_userlist.MyVi
             public void onClick(View view) {
                 Log.i("Status","Deactivated");
                 AlertDialog.Builder alert = new AlertDialog.Builder(context);
-                alert.setMessage("Your DeActivationg This Account");
+                alert.setMessage("Your Deactivating This Account");
                 alert.setTitle("Account Update");
 
                 alert.setPositiveButton("Yes Option", new DialogInterface.OnClickListener() {
@@ -156,7 +155,7 @@ public class adapter_userlist extends RecyclerView.Adapter<adapter_userlist.MyVi
                         reference = rootNode.getReference("users").child(user.getUsername());
                         //reference.setValue("sample");
                         reference.child("activation").setValue("0");
-                        Toast.makeText(view.getContext(), "(Account is inactive)",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(view.getContext(), "Account is inactive.",Toast.LENGTH_SHORT).show();
 //                    //OR
 //                    String YouEditTextValue = edittext.getText().toString();
                     }

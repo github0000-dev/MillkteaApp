@@ -87,8 +87,7 @@ public class rider_list_reports extends Fragment {
     FirebaseDatabase rootNode;
     DatabaseReference reference =FirebaseDatabase.getInstance().getReferenceFromUrl("https://storelocator-c908a-default-rtdb.firebaseio.com/");
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_riderreport, container, false);
         date1 = view.findViewById(R.id.date1);
         date2 = view.findViewById(R.id.date2);
@@ -110,12 +109,20 @@ public class rider_list_reports extends Fragment {
         DelFee=view.findViewById(R.id.DelFee);
         payablesTxt=view.findViewById(R.id.payablesTxt);
 
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, 1);
+        SimpleDateFormat format1 = new SimpleDateFormat("MM/dd/yyyy");
+
+        reportdate.setText(format1.format(cal.getTime()));
 
 
         SharedPreferences preferences = this.getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
         String accountype = preferences.getString("accountype","");
         String ridername = preferences.getString("username","");
         String storename = preferences.getString("Store","");
+
+
+        totalTxt.setVisibility(View.GONE);
 
         listpayables.setHasFixedSize(true);
         listpayables.setLayoutManager(new LinearLayoutManager(view.getContext()));
@@ -259,6 +266,7 @@ public class rider_list_reports extends Fragment {
 //                defaultview(date1.getText().toString(),date2.getText().toString());
 //            }
 //        });
+
         payabledate= new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
@@ -320,7 +328,7 @@ public class rider_list_reports extends Fragment {
                 }else{
                     listpayables(reportdate.getText().toString());
                     DelFee.setText("Delivery Fee");
-                    payablesTxt.setText("Receivables");
+                    payablesTxt.setText("Payables");
                 }
 
 
@@ -337,6 +345,8 @@ public class rider_list_reports extends Fragment {
             public void onClick(View view) {
                 if(reportdate.getText().toString().equals("") || reportdate.getText().toString().isEmpty()){
                     Toast.makeText(getContext(),"Select Date",Toast.LENGTH_SHORT).show();
+                } else if (list.size() == 0) {
+                    Toast.makeText(getContext(),"No Payables to Send.",Toast.LENGTH_SHORT).show();
                 }else{
                     AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
                     if(!status.getText().equals("Under review") && !status.getText().equals("Approved")){
@@ -347,7 +357,7 @@ public class rider_list_reports extends Fragment {
                             alert.setTitle("Receivables Process");
                             alert.setView(edittext);
 
-                            alert.setPositiveButton("Yes Option", new DialogInterface.OnClickListener() {
+                            alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int whichButton) {
                                     //What ever you want to do with the value
                                     Editable YouEditTextValue = edittext.getText();

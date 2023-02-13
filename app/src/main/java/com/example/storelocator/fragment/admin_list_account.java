@@ -61,7 +61,7 @@ public class admin_list_account extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         spinner = view.findViewById(R.id.spinner);
         ArrayAdapter<String> list2 = new ArrayAdapter<String>(getActivity()
-                , android.R.layout.simple_list_item_1,getResources().getStringArray(R.array.sorting));
+                ,android.R.layout.simple_list_item_1,getResources().getStringArray(R.array.sorting));
         list2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(list2);
 
@@ -76,16 +76,16 @@ public class admin_list_account extends Fragment {
 
                     switch (i) {
                         case 0:
-                            defaultview("User");
+                            defaultview("Store Owner");
+                            usernameSearch.setHint("Search Milktea Shop Name.");
                             break;
                         case 1:
                             defaultview("Rider");
-                            break;
-                        case 2:
-                            defaultview("STAFF");
+                            usernameSearch.setHint("Search Delivery Guy Name.");
                             break;
                         default:
-                            defaultview("User");
+                            defaultview("Store Owner");
+                            usernameSearch.setHint("Search Milktea Shop Name.");
                             break;
                     }
 
@@ -158,7 +158,7 @@ public class admin_list_account extends Fragment {
                     Log.i("R","4");
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         helper_user user = snapshot.getValue(helper_user.class);
-                        if(!user.getAccountype().equals("Store Owner") && !user.getAccountype().equals("Admin")){
+                        if(!user.getAccountype().equals("Customer") && !user.getAccountype().equals("STAFF") && !user.getAccountype().equals("Admin")){
                             list.add(user);
                         }
 
@@ -207,7 +207,7 @@ public class admin_list_account extends Fragment {
                     Log.i("R","4");
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         helper_user user = snapshot.getValue(helper_user.class);
-                        if(!user.getAccountype().equals("Store Owner") && !user.getAccountype().equals("Admin")){
+                        if(!user.getAccountype().equals("Admin")){
                             if(user.getAccountype().equals(values)){
                                 list.add(user);
                             }
@@ -259,8 +259,8 @@ public class admin_list_account extends Fragment {
                     Log.i("R","4");
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         helper_user user = snapshot.getValue(helper_user.class);
-                        if(!user.getAccountype().equals("Shop Owner") && !user.getAccountype().equals("Admin")){
-                            if(user.getAccountype().equals(values) && (user.getFullname().toLowerCase(Locale.ROOT).contains(username.toLowerCase(Locale.ROOT)))){
+                        if(!user.getAccountype().equals("Admin")){
+                            if(user.getAccountype().equals(values) && (user.getFullname().toLowerCase(Locale.ROOT).contains(username.toLowerCase(Locale.ROOT)) || (user.getStorename().toLowerCase(Locale.ROOT).contains(username.toLowerCase(Locale.ROOT))))){
                                 list.add(user);
                             }
                         }
