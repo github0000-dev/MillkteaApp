@@ -85,7 +85,8 @@ public class updateProduct extends AppCompatActivity {
 
 
         //string here is the value when you load the page
-        productid.setText(getIntent().getStringExtra("itemid"));
+//        productid.setText(getIntent().getStringExtra("itemid"));
+        productid.setVisibility(View.GONE);
         productname.setText(getIntent().getStringExtra("itemname"));
 
         pricesm.setText(getIntent().getStringExtra("pricesm"));
@@ -100,7 +101,16 @@ public class updateProduct extends AppCompatActivity {
             public void onClick(View view) {
                 if(pricesm.getText().toString().equals("") || pricemd.getText().toString().equals("") || pricelg.getText().toString().equals("")){
                     Toast.makeText(getApplicationContext(),"Please Fill all Fields",Toast.LENGTH_SHORT).show();
-                }else{
+                }else if(Long.parseLong(pricelg.getText().toString().trim()) <= Long.parseLong(pricemd.getText().toString().trim()) ||
+                    Long.parseLong(pricelg.getText().toString().trim()) <= Long.parseLong(pricesm.getText().toString().trim()) ){
+                Toast.makeText(getApplicationContext(),"Please check large size. ",Toast.LENGTH_SHORT).show();
+            }else if(Long.parseLong(pricemd.getText().toString().trim()) >= Long.parseLong(pricelg.getText().toString().trim()) ||
+                    Long.parseLong(pricemd.getText().toString().trim()) <= Long.parseLong(pricesm.getText().toString().trim()) ){
+                Toast.makeText(getApplicationContext(),"Please check medium size",Toast.LENGTH_SHORT).show();
+            }else if(Long.parseLong(pricesm.getText().toString().trim()) >= Long.parseLong(pricelg.getText().toString().trim()) ||
+                    Long.parseLong(pricesm.getText().toString().trim()) >= Long.parseLong(pricemd.getText().toString().trim()) ){
+                Toast.makeText(getApplicationContext(),"Please check small size",Toast.LENGTH_SHORT).show();
+            }else{
                     String itemID = productid.getText().toString();
                     rootNode = FirebaseDatabase.getInstance();
                     reference = rootNode.getReference("products").child(itemID);

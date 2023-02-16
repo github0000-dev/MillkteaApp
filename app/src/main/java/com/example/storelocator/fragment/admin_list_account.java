@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.storelocator.R;
 import com.example.storelocator.adapter_userlist;
+import com.example.storelocator.email.GMailSender;
 import com.example.storelocator.helper_user;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -34,6 +35,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Locale;
 
 
@@ -77,7 +80,7 @@ public class admin_list_account extends Fragment {
                     switch (i) {
                         case 0:
                             defaultview("Store Owner");
-                            usernameSearch.setHint("Search Milktea Shop Name.");
+                            usernameSearch.setHint("Search Milktea Shop or Owner Name.");
                             break;
                         case 1:
                             defaultview("Rider");
@@ -85,7 +88,7 @@ public class admin_list_account extends Fragment {
                             break;
                         default:
                             defaultview("Store Owner");
-                            usernameSearch.setHint("Search Milktea Shop Name.");
+                            usernameSearch.setHint("Search Milktea Shop or Owner Name.");
                             break;
                     }
 
@@ -128,7 +131,7 @@ public class admin_list_account extends Fragment {
                     defaultview(usertypo);
                 }else{
 //                    defaultview(spinner.getSelectedItem().toString(),usernameSearch.getText().toString());
-                    defaultview(usertypo,usernameSearch.getText().toString());
+                    defaultview(usertypo,usernameSearch.getText().toString().trim());
                 }
             }
 
@@ -178,6 +181,21 @@ public class admin_list_account extends Fragment {
 //                        }
                     }
                     myAdapter.notifyDataSetChanged();
+                    if (spinner.getSelectedItem().toString().trim().equals("Shop Owner")) {
+                        Collections.sort(list, new Comparator<helper_user>() {
+                            @Override
+                            public int compare(helper_user h1, helper_user h2) {
+                                return h1.getStorename().compareToIgnoreCase(h2.getStorename());
+                            }
+                        });
+                    } else {
+                        Collections.sort(list, new Comparator<helper_user>() {
+                            @Override
+                            public int compare(helper_user h1, helper_user h2) {
+                                return h1.getFullname().compareToIgnoreCase(h2.getFullname());
+                            }
+                        });
+                    }
                 }else{
                     Log.i("R","6");
                     //Log.i("R",searchtext);
@@ -210,6 +228,10 @@ public class admin_list_account extends Fragment {
                         if(!user.getAccountype().equals("Admin")){
                             if(user.getAccountype().equals(values)){
                                 list.add(user);
+                                if (user.getAccountype().equals("Store Owner")) {
+                                    Log.d("Shop Name No."+list.size(),user.getStorename());
+                                    Log.d("Owner Name No."+list.size(),user.getFullname());
+                                }
                             }
 
                         }
@@ -229,7 +251,23 @@ public class admin_list_account extends Fragment {
 //                            }
 //                        }
                     }
+
                     myAdapter.notifyDataSetChanged();
+                    if (spinner.getSelectedItem().toString().trim().equals("Shop Owner")) {
+                        Collections.sort(list, new Comparator<helper_user>() {
+                            @Override
+                            public int compare(helper_user h1, helper_user h2) {
+                                return h1.getStorename().compareToIgnoreCase(h2.getStorename());
+                            }
+                        });
+                    } else {
+                        Collections.sort(list, new Comparator<helper_user>() {
+                            @Override
+                            public int compare(helper_user h1, helper_user h2) {
+                                return h1.getFullname().compareToIgnoreCase(h2.getFullname());
+                            }
+                        });
+                    }
                 }else{
                     Log.i("R","6");
                     //Log.i("R",searchtext);
@@ -282,6 +320,21 @@ public class admin_list_account extends Fragment {
                     }
 
                     myAdapter.notifyDataSetChanged();
+                    if (spinner.getSelectedItem().toString().trim().equals("Shop Owner")) {
+                        Collections.sort(list, new Comparator<helper_user>() {
+                            @Override
+                            public int compare(helper_user h1, helper_user h2) {
+                                return h1.getStorename().compareToIgnoreCase(h2.getStorename());
+                            }
+                        });
+                    } else {
+                        Collections.sort(list, new Comparator<helper_user>() {
+                            @Override
+                            public int compare(helper_user h1, helper_user h2) {
+                                return h1.getFullname().compareToIgnoreCase(h2.getFullname());
+                            }
+                        });
+                    }
                 }else{
                     Log.i("R","6");
                     //Log.i("R",searchtext);

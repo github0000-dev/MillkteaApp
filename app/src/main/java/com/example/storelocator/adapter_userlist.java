@@ -1,8 +1,11 @@
 package com.example.storelocator;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,13 +17,17 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.storelocator.email.GMailSender;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class adapter_userlist extends RecyclerView.Adapter<adapter_userlist.MyViewHolder> {
 
@@ -58,6 +65,7 @@ public class adapter_userlist extends RecyclerView.Adapter<adapter_userlist.MyVi
             holder.accountype.setVisibility(View.GONE);
             holder.storeListAdd.setText("Delivery Guy");
         } else if (user.getAccountype().equals("Store Owner")) {
+            holder.accountype.setVisibility(View.VISIBLE);
             holder.accountype.setText(user.getFullname());
             holder.accountname.setText(user.getStorename());
             holder.storeListAdd.setText("Shop Owner");
@@ -126,9 +134,18 @@ public class adapter_userlist extends RecyclerView.Adapter<adapter_userlist.MyVi
                         reference = rootNode.getReference("users").child(user.getUsername());
                         //reference.setValue("sample");
                         reference.child("activation").setValue("1");
-                        Toast.makeText(view.getContext(), "(Account is active)",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(view.getContext(), "Account is now active.",Toast.LENGTH_SHORT).show();
 //                    //OR
 //                    String YouEditTextValue = edittext.getText().toString();
+
+                        String username = "storelocator2023@gmail.com";
+                        String password = "ceqcpxxmxadyvzod";
+
+                        sendEmail(username,
+                                password,
+                                user.getEmail(),
+                                "Message from Your Friendly Milktea App",
+                                "Hello " + user.getFullname() + ", You have account has been activated. Feel free to use the account anytime! =)");
                     }
                 });
                 alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -148,16 +165,26 @@ public class adapter_userlist extends RecyclerView.Adapter<adapter_userlist.MyVi
                 alert.setMessage("Your Deactivating This Account");
                 alert.setTitle("Account Update");
 
-                alert.setPositiveButton("Yes Option", new DialogInterface.OnClickListener() {
+                alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
 
                         rootNode = FirebaseDatabase.getInstance();
                         reference = rootNode.getReference("users").child(user.getUsername());
                         //reference.setValue("sample");
                         reference.child("activation").setValue("0");
-                        Toast.makeText(view.getContext(), "Account is inactive.",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(view.getContext(), "Account is now inactive.",Toast.LENGTH_SHORT).show();
 //                    //OR
 //                    String YouEditTextValue = edittext.getText().toString();
+
+                        String username = "storelocator2023@gmail.com";
+                        String password = "ceqcpxxmxadyvzod";
+
+                        sendEmail(username,
+                                password,
+                                user.getEmail(),
+                                "Message from Your Friendly Milktea App",
+                                "Hello " + user.getFullname() + ", You have account has been deactivated. Please contact administrator for details.");
+
                     }
                 });
                 alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -192,4 +219,33 @@ public class adapter_userlist extends RecyclerView.Adapter<adapter_userlist.MyVi
             storeListAdd = itemView.findViewById(R.id.storeListAdd);
         }
     }
+
+
+
+    private void sendEmail(final String Sender,final String Password,final String Receiver,final String Title,final String Message)
+    {
+
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    GMailSender sender = new GMailSender(Sender,Password);
+                    sender.sendMail(Title, "<b>"+Message+"</b>", Sender, Receiver);
+//                    makeAlert(Receiver);
+
+                } catch (Exception e) {
+                    Log.e("SendMail", e.getMessage(), e);
+                }
+            }
+
+        }).start();
+    }
+//    private void makeAlert(String email){
+//        this.runOnUiThread(new Runnable() {
+//            public void run() {
+//                System.out.println("Mail Sent to "+email+".");
+//            }
+//        });
+//    }
 }

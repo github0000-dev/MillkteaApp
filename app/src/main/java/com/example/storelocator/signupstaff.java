@@ -126,7 +126,11 @@ public class signupstaff extends AppCompatActivity {
             pickLocationBtn.setVisibility(View.GONE);
             address.setVisibility(View.GONE);
             buttonSignup.setText("Add Staff");
-        } else if (getIntent().getStringExtra("hasdata").equals("1")) {
+//            if (signupstaff.this.getSharedPreferences("user", Context.MODE_PRIVATE).getString("accountype","").equals("Shop Owner")) {
+//
+//            }
+        } else if (getIntent().getStringExtra("hasdata").equals("1") &&
+                !signupstaff.this.getSharedPreferences("user", Context.MODE_PRIVATE).getString("accountype","").equals("Admin")) {
             regstorename.getLayoutParams().height = 1;
             regfullname.setText(getIntent().getStringExtra("fullname"));
             regemail.setText(getIntent().getStringExtra("email"));
@@ -261,6 +265,8 @@ public class signupstaff extends AppCompatActivity {
 
                     SharedPreferences preferences = signupstaff.this.getSharedPreferences("user", Context.MODE_PRIVATE);
                     String actype = preferences.getString("accountype","");
+
+                    // signupstaff.this.getSharedPreferences("user", Context.MODE_PRIVATE).getString("accountype","");
                     if(actype.equals("User")){
                         if(fullname.isEmpty() || username.isEmpty() || email.isEmpty() || phone.isEmpty() || password.isEmpty()
                                 || Destlongt.isEmpty() || Deslati.isEmpty() || Address.isEmpty()){

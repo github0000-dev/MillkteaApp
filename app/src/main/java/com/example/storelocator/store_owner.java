@@ -215,14 +215,14 @@ public class store_owner extends AppCompatActivity {
 
                     }else if(price1.getText().toString().equals("") || price2.getText().toString().equals("") || price3.getText().toString().equals("")){
                         Toast.makeText(getApplicationContext(),"Please Fill all Fields",Toast.LENGTH_SHORT).show();
-                    }else if(Long.parseLong(price3.getText().toString().trim()) < Long.parseLong(price2.getText().toString().trim()) ||
-                            Long.parseLong(price3.getText().toString().trim()) < Long.parseLong(price1.getText().toString().trim()) ){
+                    }else if(Long.parseLong(price3.getText().toString().trim()) <= Long.parseLong(price2.getText().toString().trim()) ||
+                            Long.parseLong(price3.getText().toString().trim()) <= Long.parseLong(price1.getText().toString().trim()) ){
                         Toast.makeText(getApplicationContext(),"Please check large size. ",Toast.LENGTH_SHORT).show();
-                    }else if(Long.parseLong(price2.getText().toString().trim()) > Long.parseLong(price3.getText().toString().trim()) ||
-                            Long.parseLong(price2.getText().toString().trim()) < Long.parseLong(price1.getText().toString().trim()) ){
+                    }else if(Long.parseLong(price2.getText().toString().trim()) >= Long.parseLong(price3.getText().toString().trim()) ||
+                            Long.parseLong(price2.getText().toString().trim()) <= Long.parseLong(price1.getText().toString().trim()) ){
                         Toast.makeText(getApplicationContext(),"Please check medium size",Toast.LENGTH_SHORT).show();
-                    }else if(Long.parseLong(price1.getText().toString().trim()) > Long.parseLong(price3.getText().toString().trim()) ||
-                            Long.parseLong(price1.getText().toString().trim()) > Long.parseLong(price2.getText().toString().trim()) ){
+                    }else if(Long.parseLong(price1.getText().toString().trim()) >= Long.parseLong(price3.getText().toString().trim()) ||
+                            Long.parseLong(price1.getText().toString().trim()) >= Long.parseLong(price2.getText().toString().trim()) ){
                         Toast.makeText(getApplicationContext(),"Please check small size",Toast.LENGTH_SHORT).show();
                     }else{
                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {

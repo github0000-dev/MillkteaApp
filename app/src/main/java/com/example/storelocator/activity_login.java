@@ -249,7 +249,7 @@ public class activity_login extends AppCompatActivity {
                                                        "Email Verification From Your Friendly Milktea App",
                                                        "Hello " + fullname + ", the Code is "+verifCode+".");
                                                otp(intent_user,email,ref,verifCode,enterUsername);
-                                           } else if (activation.equals("0")){
+                                           } else {
                                                startActivity(intent);
                                            }
                                         }
